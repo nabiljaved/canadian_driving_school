@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Canadian Digital Driving School</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/location.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Vidaloka" rel="stylesheet">
+</head>
+
+
+
+<body>
+<div class="location-bg-1">
+  <div class="location-bg-1-div-1">
+<nav class="location-nav-bar-1">
+  <img src="/img/logo.png" class="img-fluid logo-1">
+
+
+  
+</nav>
+
+  
+
+<div class="container mt-6">
+  <div class="row">
+    <div class="col-sm-12 text-center" id="location_container">
+
+
+
+
+
+    </div>
+  </div>
+
+
+
+</div>
+
+
+</div>  
+
+
+
+<script>
+
+  class UI{
+
+    static getValues(e){
+        console.log(e.target.textContent)
+        localStorage.setItem("drivinglocationcanada", e.target.textContent);
+    }
+  
+    static getLocations = async () => {
+
+    //let locations = ['Missisaga', 'brampton', 'calgery', 'Toronto', 'Otawa'];
+
+    let locations = [];
+
+     try {
+       
+      const res = await fetch('/driving-school-location', { 
+        method: 'GET', 
+      });
+      const data = await res.json();
+      locations = data;
+       
+      if (data.errors) {
+     
+      }
+      if (data) {
+        // location.assign('/admin-dashboard');
+        const container = document.getElementById('location_container')
+        //console.log(locations)
+        locations.map(location => {
+
+          let sanitize = location.location;
+          sanitize.replace(/[&\/\\#,+()$~%.'":*?<>{})]/g, '')
+
+          container.innerHTML += `
+          <p class="location-bg-1-text-2"><a href="/home" class="location-bg-1-text-1">${location.location}</a></p>
+          `
+
+        })
+
+
+
+      }
+
+
+     } catch (error) {
+       
+     }
+    
+}
+  
+  }
+  
+  
+  
+
+  // Event: Display Locations
+  document.addEventListener('DOMContentLoaded', UI.getLocations);
+  const input = document.getElementById('location_container');
+  input.addEventListener('click', UI.getValues);
+  
+  </script>
+
+
+</body>
+
+</html>  
